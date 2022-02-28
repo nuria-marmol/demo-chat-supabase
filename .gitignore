@@ -1,0 +1,4 @@
+# Config de JetBrains
+.idea/
+# Instalación JS
+node_modules/
