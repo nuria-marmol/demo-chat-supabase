@@ -30,7 +30,30 @@ createApp({
                     { nombre: this.nombre, texto: this.nuevoMensaje }
                     ])
             console.log(this.nuevoMensaje);
+            this.nombre = "";
             this.nuevoMensaje = "";
+            this.notificacionesNuevosMensajes();
+        },
+        notificacionesNuevosMensajes: function() {
+            // Si el navegador no soporta las notificaciones
+            if (!("Notification" in window)) {
+                // Mostramos esta alerta
+                alert("Tu navegador no admite notificaciones de escritorio");
+            // Si ya se han concedido los permisos de notificaciones
+            } else if (Notification.permission === "granted") {
+                // Creamos la notificación
+                new Notification("Nuevos mensajes sin leer");
+            // Si el usuario NO ha rechazado los permisos (pero tampoco los ha concedido)
+            } else if (Notification.permission !== "denied") {
+                // Los solicitamos
+                Notification.requestPermission().then((permission) => {
+                    // Cuando el usuario acepte
+                    if (permission === "granted") {
+                        // Creamos la notificación
+                        new Notification("Nuevos mensajes sin leer");
+                    }
+                });
+            }
         },
         // Ahora ya no hay que refrescar para que los cargue
         escucharNuevosMensajes: function() {
